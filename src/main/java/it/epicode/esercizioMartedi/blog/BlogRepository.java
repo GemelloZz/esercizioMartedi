@@ -1,0 +1,9 @@
+package it.epicode.esercizioMartedi.blog;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BlogRepository extends JpaRepository<Blog, Long> {
+ public Blog findByTitolo(String titolo);
+
+
+}
