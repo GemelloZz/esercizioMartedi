@@ -13,4 +13,5 @@ public class BlogRequest {
     private String contenuto;
     private double tempoDiLettura;
     private String cover;
+
 }

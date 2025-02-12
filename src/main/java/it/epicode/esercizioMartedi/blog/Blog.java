@@ -1,6 +1,8 @@
 package it.epicode.esercizioMartedi.blog;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import it.epicode.esercizioMartedi.autore.Autore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +17,7 @@ public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+
     private String categoria ;
     private String titolo ;
     private String contenuto;
@@ -23,5 +26,13 @@ public class Blog {
 
     public static Blog orElse(Object o) {
         return null;
+    }
+
+    @ManyToOne
+    @JsonIgnoreProperties("blog")
+    private Autore autore;
+
+    public static boolean isEmpty() {
+        return false;
     }
 }

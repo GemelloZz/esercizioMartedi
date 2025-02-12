@@ -1,5 +1,6 @@
 package it.epicode.esercizioMartedi.autore;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +22,25 @@ public class AutoreController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Autore getAutore(@PathVariable  Long id) {
+        if (autoreService.getAutore(id).isEmpty()) {
+            throw new EntityNotFoundException("Autore con ID " + id + " non trovato.");
+        }
+
         return autoreService.getAutore(id);
+
     }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Autore createAutore(@RequestBody Autore autore) {
+    public Autore createAutore(@RequestBody AutoreRequest autoreRequest) {
+        Autore autore = new Autore();
+        autore.setNome(autoreRequest.getNome());
+        autore.setCognome(autoreRequest.getCognome());
+        autore.setDataDiNascita(autoreRequest.getDataDiNascita());
+        autore.setEmail(autoreRequest.getEmail());
+        autore.setTelefono(autoreRequest.getTelefono());
         return autoreService.createAutore(autore);
     }
+
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Autore updateAutore(@PathVariable Long id, @RequestBody Autore autore) {

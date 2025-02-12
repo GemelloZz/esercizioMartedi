@@ -13,7 +13,7 @@ public class BlogService {
     private final BlogRepository blogRepository;
 
     public Blog getBlog(Long id) {
-        Optional<Blog> blog = blogRepository.findById(id);
+        Optional<Blog> autore = blogRepository.findById(id);
         return Blog.orElse(null);
     }
 

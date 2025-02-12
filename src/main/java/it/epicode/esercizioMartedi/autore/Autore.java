@@ -1,9 +1,16 @@
 package it.epicode.esercizioMartedi.autore;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import it.epicode.esercizioMartedi.blog.Blog;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringExclude;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -21,5 +28,17 @@ public class Autore {
     private String email;
     private String telefono;
 
+    @ToString.Exclude
+    @JsonIgnoreProperties("autore")
+    Autore autore;
 
+  @ToStringExclude
+  @JsonIgnoreProperties("autore")
+  @OneToMany(mappedBy = "autore")
+  private Set<Blog> blog = new HashSet<>();
+
+
+    public boolean isEmpty() {
+        return blog.isEmpty();
+    }
 }
