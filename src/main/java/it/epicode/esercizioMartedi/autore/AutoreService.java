@@ -1,6 +1,9 @@
 package it.epicode.esercizioMartedi.autore;
 
 
+import it.epicode.esercizioMartedi.EmailService.EmailService;
+
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AutoreService {
     private final AutoreRepository autoreRepository;
+    private final EmailService emailService;
 
   public Autore getAutore(Long id) {
     Optional<Autore> autore = autoreRepository.findById(id);
@@ -21,7 +25,14 @@ public class AutoreService {
     }
 
     public Autore createAutore(Autore autore) {
+       ;
+        try {
+            emailService.sendEmail(autore.getEmail(), "Benvenuto", "ciao, piacere sono gabriele e mi chiamo gabriele ");
+        } catch (MessagingException e) {
+           System.out.println("Email non inviata");
+        }
         return autoreRepository.save(autore);
+
     }
 
     public Autore updateAutore(Long id, Autore autore) {

@@ -1,11 +1,16 @@
 package it.epicode.esercizioMartedi.autore;
 
+import com.cloudinary.Cloudinary;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/blog/autori")
@@ -13,6 +18,27 @@ import java.util.List;
 
 public class AutoreController {
     private final AutoreService autoreService;
+
+    @Autowired
+    private AutoreRepository autoreRepository;
+
+    @Autowired
+    private Cloudinary cloudinary;
+
+    @PostMapping("/{id}/carica-immagine")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String caricaImmagine(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+       try {
+           Map result = cloudinary.uploader().upload(file.getBytes(), Cloudinary.asMap("folder", "FS0824", "public_id", file.getOriginalFilename()));
+           autoreService.getAutore(id).setCover(result.get("secure_url").toString());
+          autoreRepository.save(autoreService.getAutore(id));
+           return result.get("secure_url").toString();
+
+
+       } catch (IOException e) {
+           throw new RuntimeException("error uploading image",e);
+       }
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

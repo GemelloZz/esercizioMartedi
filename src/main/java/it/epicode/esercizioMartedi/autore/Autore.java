@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.apache.commons.lang3.builder.ToStringExclude;
+
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,20 +22,21 @@ public class Autore {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    @Column(unique = false)
     private String nome;
+    @Column(unique = false)
     private String cognome;
     private String dataDiNascita;
     private String email;
+    @Column(unique = true)
     private String telefono;
 
     @ToString.Exclude
     @JsonIgnoreProperties("autore")
-    Autore autore;
-
-  @ToStringExclude
-  @JsonIgnoreProperties("autore")
-  @OneToMany(mappedBy = "autore")
+    @OneToMany(mappedBy = "autore")
   private Set<Blog> blog = new HashSet<>();
+
+    private String cover;
 
 
     public boolean isEmpty() {

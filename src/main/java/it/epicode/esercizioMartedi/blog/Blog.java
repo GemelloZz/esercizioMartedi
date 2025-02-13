@@ -17,11 +17,15 @@ public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-
+    @Column(name = "categoria")
     private String categoria ;
+    @Column(name = "titolo")
     private String titolo ;
+    @Column(name = "contenuto")
     private String contenuto;
+    @Column(name = "tempoDiLettura")
     private double tempoDiLettura;
+    @Column(name = "cover")
     private String cover;
 
     public static Blog orElse(Object o) {
